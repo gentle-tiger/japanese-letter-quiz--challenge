@@ -1,19 +1,43 @@
-import React, { useState } from "react"
-import WordItem from "./WordItem";
-import { heraganaData } from "./heragana";
-import { katakanaData } from "./katakana";
-
+import React, { useEffect, useState } from "react"
+// import WordItem from "./WordItem";
+// import { heraganaData } from "./date/heragana";
+// import { katakanaData } from "./date/katakana";
+import { Changed } from "./component/Changed";
+import { WordComplete } from "./component/WordComplete";
+import { data } from './assets/heragana.json'
 
 
 function App() {
   const [isState, serState] = useState(true);
+  const [heragana, setHeragana] = useState([]);
+  const [katakana, setKatakana] = useState([]);
+
+
+
 
   const modeChange = () => {
     serState(isState => !isState);
   }
 
-  const heragana = heraganaData.map(item => new WordItem(item.id, item.word, item.phone, item.complete));
-  const katakana = katakanaData.map(item => new WordItem(item.id, item.word, item.phone, item.complete));
+
+  useEffect(() => {
+    fetch('/assets/heragana.json')
+      .then(res => {
+        if (res.ok) {
+          return res.json()
+        }
+        throw res;
+      })
+      .then(data => {
+        // 히라가나 데이터 가져오기
+        setHeragana(data.heraganaData)
+        // 가타카나 데이터 가져오기
+        setKatakana(data.katakanaData)
+        console.log("heragana", heragana)
+
+        // 필요한 작업 수행
+      })
+  }, [])
 
   // const randomWord = () => {
   //   if (isState) {
@@ -22,7 +46,6 @@ function App() {
   //   return katakana.forEach(item => item.word)
   // }
 
-  const randomWord = isState ? "heragana" : "katakana";
   return (
     <div>
       <body className="flex w-full bg-Stone-400 flex-row justify-center ">
@@ -35,16 +58,7 @@ function App() {
           }
         </h1>
         {/* 게임 전환 버튼 */}
-        <div className=" text-sm  fixed right-1 top-10">
-          {
-            isState ?
-              // <button className="background-Orange" onClick={modeChange}>가타카나</button> :
-              <button className="font-bold bg-Sky-500 rounded-md" onClick={modeChange}>가타카나 게임하기</button> :
-
-              <button className="font-bold bg-Red-500 rounded-md" onClick={modeChange}>히라가나 게임하기</button>
-
-          }
-        </div>
+        <Changed isState={isState} modeChange={modeChange} />
       </body>
       {/* body */}
       <header className="w-full  flex  justify-center items-center bg-Gray-300 gap-10">
@@ -59,14 +73,7 @@ function App() {
           </div>
         </nav>
         {/* 단어 맞추기 */}
-        <div className="w-60 h-40 flex flex-col rounded-sm border-spacing-1 bg-Slate-500 ">
-          <div className="w-full flex justify-center items-center gap-1 bg-Red-700">
-            <div className=" flex-1 border-2">1{randomWord}</div>
-            <div className=" flex-1 border-2">2</div>
-            <div className=" flex-1 border-2">3</div>
-          </div>
-          <div className="border-2 h-auto" >단어</div>
-        </div>
+        <WordComplete />
 
       </header>
       <footer> </footer>
