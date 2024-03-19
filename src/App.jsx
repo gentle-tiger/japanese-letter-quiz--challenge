@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react"
-// import WordItem from "./WordItem";
-// import { heraganaData } from "./date/heragana";
-// import { katakanaData } from "./date/katakana";
 import { Changed } from "./component/Changed";
 import { WordComplete } from "./component/WordComplete";
-import { data } from './assets/heragana.json'
 
 
 function App() {
@@ -19,25 +15,25 @@ function App() {
     serState(isState => !isState);
   }
 
-
   useEffect(() => {
-    fetch('/assets/heragana.json')
+    fetch(`./assets/heragana.json`)
       .then(res => {
         if (res.ok) {
           return res.json()
         }
-        throw res;
+        throw new Error('Network response was not ok.');
+
       })
       .then(data => {
-        // 히라가나 데이터 가져오기
-        setHeragana(data.heraganaData)
-        // 가타카나 데이터 가져오기
-        setKatakana(data.katakanaData)
-        console.log("heragana", heragana)
-
-        // 필요한 작업 수행
+        setHeragana(data.heragana)
+        setKatakana(data.katakana)
       })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   }, [])
+
+
 
   // const randomWord = () => {
   //   if (isState) {
@@ -47,24 +43,27 @@ function App() {
   // }
 
   return (
-    <div>
-      <body className="flex w-full bg-Stone-400 flex-row justify-center ">
+    <div className="flex flex-col ">
+      <body className="flex w-full bg-Sky-400 py-2 flex-row justify-center flex-1">
         {/* 제목 */}
         <h1 className="text-2xl font-bold ">
           {
             isState ?
               <div>ひらがな(히라가나) 외우기 게임</div> :
+              // <img src="/assets/가타카나.jpg"></img> :
+              // <img src="/assets/가타카나.jpg"></img>
               <div>カタカナ(가타카나) 외우기 게임</div>
           }
         </h1>
-        {/* 게임 전환 버튼 */}
-        <Changed isState={isState} modeChange={modeChange} />
       </body>
+      {/* 게임 전환 버튼 */}
+      <Changed isState={isState} modeChange={modeChange} />
       {/* body */}
-      <header className="w-full  flex  justify-center items-center bg-Gray-300 gap-10">
+      <header className="w-full  flex flex-2  justify-center items-center bg-Sky-500 gap-10">
         {/* 히라가나 가타카나 표 */}
         <nav className="">
-          <div className="grid grid-cols-5 border-2 rounded-md w-60 flex ">
+          <div className="grid grid-cols-5 border-2 rounded-md w-60 h-auto my-10 flex bg-Orange-400 ">
+
             {isState ?
               heragana.map(item => <p key={item.id} className="flex justify-center border">{item.word}</p>) :
               katakana.map(item => <p key={item.id} className="flex justify-center border">{item.word}</p>)
@@ -73,10 +72,10 @@ function App() {
           </div>
         </nav>
         {/* 단어 맞추기 */}
-        <WordComplete />
+        <WordComplete isState={isState} />
 
       </header>
-      <footer> </footer>
+      <footer className="flex flex-1"> </footer>
     </div >
   );
 } export default App;
