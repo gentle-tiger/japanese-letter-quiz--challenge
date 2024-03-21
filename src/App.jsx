@@ -33,7 +33,9 @@ function App() {
       });
   }, [])
 
-
+  const wordColorChange = () => {
+    console.log("app.js : wordColorChange 실행")
+  }
 
   // const randomWord = () => {
   //   if (isState) {
@@ -72,7 +74,7 @@ function App() {
           </div>
         </nav>
         {/* 단어 맞추기 */}
-        <WordComplete isState={isState} />
+        <WordComplete isState={isState} wordColorChange={wordColorChange} />
 
       </header>
       <footer className="flex flex-1"> </footer>
