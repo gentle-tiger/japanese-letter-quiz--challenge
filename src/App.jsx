@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { Changed } from "./component/Changed";
+import { ChangedBtn } from "./component/ChangedBtn";
 import { WordComplete } from "./component/WordComplete";
 
 
@@ -48,7 +48,7 @@ function App() {
     <div className="flex flex-col ">
       <body className="flex w-full bg-Sky-400 py-2 flex-row justify-center flex-1">
         {/* 제목 */}
-        <h1 className="text-2xl font-bold ">
+        <h1 className="text-2xl font-bold  ">
           {
             isState ?
               <div>ひらがな(히라가나) 외우기 게임</div> :
@@ -59,7 +59,7 @@ function App() {
         </h1>
       </body>
       {/* 게임 전환 버튼 */}
-      <Changed isState={isState} modeChange={modeChange} />
+      <ChangedBtn isState={isState} modeChange={modeChange} />
       {/* body */}
       <header className="w-full  flex flex-2  justify-center items-center bg-Sky-500 gap-10">
         {/* 히라가나 가타카나 표 */}
