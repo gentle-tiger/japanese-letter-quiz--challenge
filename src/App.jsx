@@ -35,6 +35,7 @@ function App() {
 
   const wordColorChange = () => {
     console.log("app.js : wordColorChange 실행")
+
   }
 
   // const randomWord = () => {
@@ -61,19 +62,8 @@ function App() {
       {/* 게임 전환 버튼 */}
       <ChangedBtn isState={isState} modeChange={modeChange} />
       {/* body */}
-      <header className="w-full  flex flex-2  justify-center items-center bg-Sky-500 gap-10">
-        {/* 히라가나 가타카나 표 */}
-        <nav className="">
-          <div className="grid grid-cols-5 border-2 rounded-md w-60 h-auto my-10 flex bg-Orange-400 ">
-
-            {isState ?
-              heragana.map(item => <p key={item.id} className="flex justify-center border">{item.word}</p>) :
-              katakana.map(item => <p key={item.id} className="flex justify-center border">{item.word}</p>)
-
-            }
-          </div>
-        </nav>
-        {/* 단어 맞추기 */}
+      <header className="w-full  flex  bg-Sky-500 gap-10">
+        {/* 히라가나 가타카나 표,  단어 맞추기 */}
         <WordComplete isState={isState} wordColorChange={wordColorChange} />
 
       </header>
